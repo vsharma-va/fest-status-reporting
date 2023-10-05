@@ -42,7 +42,7 @@ async function getPassOccuranceMap(mongoDbUri) {
             CLTR_GRD: [0, "Group Dance"],
             CLTR_FAS: [0, "Fashion Show"],
             ESPORTS: [0, "Esports pass"],
-            SPORT_FB_M: [-1, "Men's Football"],
+            SPORT_FB_M: [0, "Men's Football"],
             SPORT_BB_M: [0, "Men's Basketball"],
             SPORT_VB_M: [0, "Men's Volleyball"],
             SPORT_TN_M: [0, "Men's Tennis"],
