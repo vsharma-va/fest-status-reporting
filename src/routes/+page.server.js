@@ -3,8 +3,10 @@ import { MongoClient } from "mongodb";
 export const load = async ({ cookies }) => {
     const foundMongoDbURL = cookies.get("mongoDbUri");
     if (foundMongoDbURL) {
-        let passOccuranceMap = await getPassOccuranceMap(foundMongoDbURL.toString());
-        return { success: true, passOccuranceMap: passOccuranceMap};
+        let passOccuranceMap = await getPassOccuranceMap(
+            foundMongoDbURL.toString()
+        );
+        return { success: true, passOccuranceMap: passOccuranceMap };
     } else {
         return { success: false };
     }
@@ -14,10 +16,10 @@ export const actions = {
     default: async (event) => {
         const formData = await event.request.formData();
         const uri = formData.get("mongoDbUri");
-        
+
         if (uri) {
             // let passOccuranceMap = await getPassOccuranceMap(uri?.toString());
-            event.cookies.set('mongoDbUri', uri?.toString())
+            event.cookies.set("mongoDbUri", uri?.toString());
             return { success: true };
         } else {
             return { success: false };
@@ -34,7 +36,6 @@ async function getPassOccuranceMap(mongoDbUri) {
         const client = new MongoClient(mongoDbUri.toString());
         const database = client.db("ticketing");
         const passes = database.collection("passes");
-        const passesArray = await passes.find({}).toArray();
         let passOccuranceMap = {
             CLTR_PRO: [0, "Proshow and Cultural Events"],
             SUP_PRO: [-4, "Superpass Proshow + Cultural"],
@@ -54,10 +55,11 @@ async function getPassOccuranceMap(mongoDbUri) {
             SPORT_ATH: [0, "Athletics"],
             SPORT_CHS: [0, "Chess"],
         };
-        passesArray.forEach((element) => {
+        for (let key in passOccuranceMap) {
+            const count = await passes.countDocuments({ type: key.toString() });
             //@ts-ignore
-            passOccuranceMap[element.type][0] += 1;
-        });
+            passOccuranceMap[key][0] = count - passOccuranceMap[key][0];
+        }
         return passOccuranceMap;
     }
 }
