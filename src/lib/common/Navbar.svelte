@@ -71,6 +71,9 @@
             <a href="/pass-status" class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]">
                 Pass Status
             </a>
+            <a href="/generate-callback" class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]">
+                Generate Callback
+            </a>
             <a href="/" class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]">
                 Dev
             </a>
