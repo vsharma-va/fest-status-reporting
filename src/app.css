@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face{
+    font-family: 'Yatra One';
+    src:  url("./lib/assets/YatraOne-Regular.ttf") format('truetype');
+}
+
+@font-face{
+    font-family: 'Skyscapers';
+    src:  url("./lib/assets/Skyscapers.ttf") format('truetype');
+}
+
+.font-yatra{
+    font-family: 'Yatra One';
+}
+
+.font-skyscapers{
+    font-family: 'Skyscapers';
+}
