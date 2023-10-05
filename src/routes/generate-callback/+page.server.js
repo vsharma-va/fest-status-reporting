@@ -18,11 +18,14 @@ export const actions = {
             const client = new MongoClient(mongoDbUri.toString());
             const database = client.db("ticketing");
             const payments = database.collection("payments");
-            const foundPayment = await payments.findOne({
-                email: emailId,
-                type: passType,
-                status: "paid",
-            });
+            const foundPayment = await payments.findOneAndUpdate(
+                {
+                    email: emailId,
+                    type: passType,
+                    status: "paid",
+                },
+                { $set: { status: "created" } }
+            );
             if (foundPayment) {
                 const constructedUrl = `https://falak.mitblrfest.in/callback/pay/${foundPayment.ref_id}`;
                 return { success: true, url: constructedUrl };
