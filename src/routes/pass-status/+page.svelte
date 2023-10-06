@@ -61,33 +61,34 @@
 >
     {#if form?.success}
         {#each form.foundPass as pass, i}
-        <div
-            class="flex flex-col w-[80%] sm:w-1/3 md:w-1/3 lg:w-1/4 xl:w-1/5 h-[300px] items-center justify-center group divide-y divide-[#EFF7CF] divide-y-4 divide-solid"
-        >
             <div
-                class="w-[100%] h-full bg-[#1C1337] h-[300px] border-[1px] mt-10 rounded-xl flex flex-col items-center justify-center shadow-[5px_5px_0px_0px_rgba(239,247,207,1)] -translate-x-1 -translate-y-1 transition ease-out duration-300"
+                class="flex flex-col w-[80%] sm:w-1/3 md:w-1/3 lg:w-1/4 xl:w-1/5 h-[300px] items-center justify-center group divide-y divide-[#EFF7CF] divide-y-4 divide-solid"
             >
-                <!-- <p
+                <div
+                    class="w-[100%] h-full bg-[#1C1337] h-[300px] border-[1px] mt-10 rounded-xl flex flex-col items-center justify-center shadow-[5px_5px_0px_0px_rgba(239,247,207,1)] -translate-x-1 -translate-y-1 transition ease-out duration-300"
+                >
+                    <!-- <p
                     class="text-[#EFF7CF] font-yatra text-2xl font-bolder tracking-wider text-center"
                 >
                     {form.foundPass.email}
                 </p> -->
-                <p
-                    class="text-[#EFF7CF] font-yatra text-2xl font-bolder tracking-wider text-center"
+                    <p
+                        class="text-[#EFF7CF] font-yatra text-2xl font-bolder tracking-wider text-center"
+                    >
+                        {pass.type}
+                    </p>
+                </div>
+                <div
+                    class="bg-[#1C1337] h-[200px] w-[80%] rounded-bl-xl rounded-br-xl border-[1px] border-solid flex flex-col items-center justify-center shadow-[5px_5px_0px_0px_rgba(239,247,207,1)] -translate-x-1 -translate-y-1 transition ease-out duration-300"
                 >
-                    {pass.type}
-                </p>
+                    <p
+                        class="text-[#EFF7CF] font-yatra text-3xl font-bolder tracking-widest text-center"
+                    >
+                        {pass.generated}
+                    </p>
+                </div>
             </div>
-            <div
-                class="bg-[#1C1337] h-[200px] w-[80%] rounded-bl-xl rounded-br-xl border-[1px] border-solid flex flex-col items-center justify-center shadow-[5px_5px_0px_0px_rgba(239,247,207,1)] -translate-x-1 -translate-y-1 transition ease-out duration-300"
-            >
-                <p
-                    class="text-[#EFF7CF] font-yatra text-3xl font-bolder tracking-widest text-center"
-                >
-                    {pass.generated}
-                </p>
-            </div>
-        </div>
+        {/each}
     {:else}
         <div
             class="flex flex-col w-1/4 h-[300px] items-center justify-center group divide-y divide-[#EFF7CF] divide-y-4 divide-dashed"
