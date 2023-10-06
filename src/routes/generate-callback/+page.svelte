@@ -93,7 +93,7 @@
 <div class="flex justify-center item-center w-full p-2">
     {#if form?.success}
         <div
-            class="flex flex-col  h-[300px] items-center justify-center group divide-y divide-[#EFF7CF] divide-y-4 divide-solid"
+            class="flex flex-col h-[300px] items-center justify-center group divide-y divide-[#EFF7CF] divide-y-4 divide-solid"
         >
             <p
                 class="text-[#EFF7CF] font-yatra text-2xl font-bolder tracking-wider text-center"

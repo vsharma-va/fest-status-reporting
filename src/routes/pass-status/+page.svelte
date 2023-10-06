@@ -60,6 +60,7 @@
     class="w-full h-full flex flex-col sm:flex-row justify-center items-center flex-wrap gap-5 md:flex-row md:gap-5"
 >
     {#if form?.success}
+        {#each form.foundPass as pass, i}
         <div
             class="flex flex-col w-[80%] sm:w-1/3 md:w-1/3 lg:w-1/4 xl:w-1/5 h-[300px] items-center justify-center group divide-y divide-[#EFF7CF] divide-y-4 divide-solid"
         >
@@ -74,7 +75,7 @@
                 <p
                     class="text-[#EFF7CF] font-yatra text-2xl font-bolder tracking-wider text-center"
                 >
-                    {form.foundPass.type}
+                    {pass.type}
                 </p>
             </div>
             <div
@@ -83,7 +84,7 @@
                 <p
                     class="text-[#EFF7CF] font-yatra text-3xl font-bolder tracking-widest text-center"
                 >
-                    {form.foundPass.generated}
+                    {pass.generated}
                 </p>
             </div>
         </div>

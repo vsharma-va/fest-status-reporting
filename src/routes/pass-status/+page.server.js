@@ -25,10 +25,10 @@ export const actions = {
                 const client = new MongoClient(uri);
                 const database = client.db("ticketing");
                 const passes = database.collection("passes");
-                const foundPass = await passes.findOne(
+                const foundPass = await passes.find(
                     { email: emailId?.toString(), generated: true },
                     optionsTypes
-                );
+                ).toArray();
                 if (foundPass) {
                     return { success: true, foundPass: foundPass };
                 } else {
