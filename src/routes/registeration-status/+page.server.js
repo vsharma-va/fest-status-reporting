@@ -1,0 +1,328 @@
+import { redirect } from "@sveltejs/kit";
+import { MongoClient } from "mongodb";
+
+const projectionTypes = {
+    _id: 0,
+};
+const optionsTypes = {
+    projection: projectionTypes,
+};
+
+//@ts-ignore
+const client = new MongoClient(process.env.MONGO_URL);
+
+const events = [
+    {
+        name: "MindScribe",
+        type: "solo",
+        strapiId: "C_MNDSCR",
+    },
+    {
+        name: "BattleGrounds Mayhem",
+        type: "team",
+        strapiId: "ES_BGDMHM",
+    },
+    {
+        name: "Beats and Carrots",
+        type: "solo",
+        strapiId: "C_BTSCAR",
+    },
+    {
+        name: "COD:EXECUTION",
+        type: "team",
+        strapiId: "ES_CODEXE",
+    },
+    {
+        name: "Valorant: Rising",
+        type: "team",
+        strapiId: "ES_VALRIS",
+    },
+    {
+        name: "Echoes",
+        type: "solo",
+        strapiId: "C_ECHOES",
+    },
+    {
+        name: "Natyam Nirvana",
+        type: "team",
+        strapiId: "C_GRC",
+    },
+    {
+        name: "Street Beat",
+        type: "solo",
+        strapiId: "C_STRBET",
+    },
+    {
+        name: "Bat Bowl Bid",
+        type: "team",
+        strapiId: "C_BTBLBD",
+    },
+    {
+        name: "Logolympic",
+        type: "solo",
+        strapiId: "C_LOGLYM",
+    },
+    {
+        name: "Beat2Beat",
+        type: "team",
+        strapiId: "C_GRW",
+    },
+    {
+        name: "Crown Quest",
+        type: "team",
+        strapiId: "ES_CRWQST",
+    },
+    {
+        name: "Focus & Frame",
+        type: "solo",
+        strapiId: "C_FCSFRM",
+    },
+    {
+        name: "Goal Quest",
+        type: "solo",
+        strapiId: "ES_GOLQST",
+    },
+    {
+        name: "Zenith",
+        type: "solo",
+        strapiId: "C_ZENITH",
+    },
+    {
+        name: "Shark Tank",
+        type: "team",
+        strapiId: "C_SHKTNK",
+    },
+    {
+        name: "Runway Rendezvous",
+        type: "team",
+        strapiId: "C_FAS",
+    },
+    {
+        name: "Surge Safari",
+        type: "team",
+        strapiId: "C_SRGSAF",
+    },
+    {
+        name: "Brushstroke Battle",
+        type: "solo",
+        strapiId: "C_BSHBTL",
+    },
+    {
+        name: "Manga Odyssey",
+        type: "solo",
+        strapiId: "C_MNGODY",
+    },
+    {
+        name: "Rangavalli",
+        type: "team",
+        strapiId: "C_RANCOM",
+    },
+    {
+        name: "Theatrical Showdown",
+        type: "team",
+        strapiId: "C_THESHD",
+    },
+    {
+        name: "Street Spotlight",
+        type: "team",
+        strapiId: "C_STRBET",
+    },
+    {
+        name: "Market Mayhem",
+        type: "team",
+        strapiId: "C_MKTMHM",
+    },
+    {
+        name: "CineCraft",
+        type: "team",
+        strapiId: "C_CINCRF",
+    },
+    {
+        name: "BrainWave",
+        type: "team",
+        strapiId: "C_BRNWAV",
+    },
+    {
+        name: "Quiz-a-palooza",
+        type: "team",
+        strapiId: "C_QZAPLZ",
+    },
+    {
+        name: "Battle Of Babble",
+        type: "team",
+        strapiId: "C_BTLBAB",
+    },
+];
+
+//@ts-ignore
+export const load = async (event) => {
+    const session = await event.locals.getSession();
+    if (!session?.user) {
+        throw redirect(302, "/");
+    } else {
+        //@ts-ignore
+        const client = new MongoClient(process.env.MONGO_URL);
+        const saDatabase = client.db("status_app");
+        const accounts = saDatabase.collection("sa_accounts");
+
+        const foundAccount = await accounts.findOne({
+            email: session.user.email,
+        });
+        if (!foundAccount) {
+            return { authorised: false };
+        } else {
+            if (
+                foundAccount.role === "gen+" ||
+                foundAccount.role === "gen-" ||
+                foundAccount.role === "event_lead"
+            ) {
+                return { authorised: true, events: events };
+            } else {
+                return { authorised: false };
+            }
+        }
+    }
+};
+
+export const actions = {
+    // @ts-ignore
+    default: async (event) => {
+        const session = await event.locals.getSession();
+        if (!session?.user) {
+            throw redirect(302, "/");
+        } else {
+            const perPage = 5;
+            const formData = await event.request.formData();
+            let eventId = formData.get("eventName");
+            let pageNumber = formData.get("pageNumber");
+            if (eventId) {
+                let requiredEventObj;
+                events.forEach((indiObj) => {
+                    if (indiObj.strapiId == eventId) {
+                        requiredEventObj = indiObj;
+                    }
+                });
+                //@ts-ignore
+
+                const database = client.db("teams");
+                if (requiredEventObj) {
+                    //@ts-ignore
+                    if (requiredEventObj.type === "solo") {
+                        const soloRegs = database.collection("t_soloregs");
+                        let reg = await soloRegs
+                            .find(
+                                {
+                                    //@ts-ignore
+                                    event: requiredEventObj.strapiId,
+                                },
+                                optionsTypes
+                            )
+                            .skip(Number(pageNumber) * perPage)
+                            .limit(perPage)
+                            .toArray();
+                        let map = await getUserDetails(false, reg);
+                        if (Number(pageNumber) == 0) {
+                            return {
+                                success: true,
+                                team: false,
+                                registrationObj: map,
+                                firstPage: true,
+                            };
+                        } else {
+                            return {
+                                success: true,
+                                team: false,
+                                registrationObj: map,
+                                firstPage: false,
+                            };
+                        }
+                        //@ts-ignore
+                    } else if (requiredEventObj.type === "team") {
+                        const teamRegs = database.collection("t_teams");
+                        let reg = await teamRegs
+                            .find(
+                                {
+                                    //@ts-ignore
+                                    event: requiredEventObj.strapiId,
+                                },
+                                optionsTypes
+                            )
+                            .skip(Number(pageNumber) * perPage)
+                            .limit(perPage)
+                            .toArray();
+                        let map = await getUserDetails(true, reg);
+                        if (Number(pageNumber) == 0) {
+                            return {
+                                success: true,
+                                team: true,
+                                registrationObj: map,
+                                firstPage: true,
+                            };
+                        } else {
+                            return {
+                                success: true,
+                                team: true,
+                                registrationObj: map,
+                                firstPage: false,
+                            };
+                        }
+                    }
+                } else {
+                    throw redirect(302, "/");
+                }
+            }
+        }
+    },
+};
+
+//@ts-ignore
+async function getUserDetails(team, users) {
+    if (!team) {
+        const database = client.db("teams");
+        const userData = database.collection("t_users");
+        let userMap = [];
+        //@ts-ignore
+        for (let index in users) {
+            //@ts-ignore
+            let userDetail = await userData.findOne(
+                { email: { $eq: users[index].email.toString() } },
+                optionsTypes
+            );
+            userMap.push(userDetail);
+        }
+        //@ts-ignore
+        return userMap;
+    } else {
+        const database = client.db("teams");
+        const userData = database.collection("t_users");
+        let userMap = {};
+        for (let index in users) {
+            let ownerDetail = await userData.findOne(
+                {
+                    email: { $eq: users[index].owner.toString() },
+                },
+                optionsTypes
+            );
+            //@ts-ignore
+            userMap[index] = [ownerDetail];
+            if (users[index].members.length != 0) {
+                for (let ti in users[index].members) {
+                    //@ts-ignore
+                    if (ti == 0) {
+                        continue;
+                    }
+                    let userDetail = await userData.findOne(
+                        {
+                            email: { $eq: users[index].members[ti].email },
+                        },
+                        optionsTypes
+                    );
+                    //@ts-ignore
+                    userMap[index].push(userDetail);
+                }
+            }
+        }
+        console.log(userMap);
+        return userMap;
+    }
+}

@@ -3,7 +3,8 @@
 
     import closebtn from "../assets/circle-xmark-regular.svg";
 
-    import { navigating } from "$app/stores";
+    import { navigating, page } from "$app/stores";
+    import { signOut } from "@auth/sveltekit/client";
 
     // @ts-ignore
     let menu;
@@ -61,24 +62,57 @@
         <img src={closebtn} width="30px" />
     </button>
     <div class=" w-full h-full flex items-center justify-center">
-        <div class="flex flex-col justify-center items-center gap-10">
-            <a href="/" class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]">
+        <div class="flex flex-col justify-center items-center gap-7">
+            <a
+                href="/pass-count"
+                class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]"
+            >
                 Pass Count
             </a>
-            <a href="/payment-status" class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]">
+            <a
+                href="/payment-status"
+                class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]"
+            >
                 Payment Status
             </a>
-            <a href="/pass-status" class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]">
+            <a
+                href="/pass-status"
+                class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]"
+            >
                 Pass Status
             </a>
-            <a href="/generate-callback" class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]">
+            <a
+                href="/generate-callback"
+                class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]"
+            >
                 Generate Callback
             </a>
-            <a href="/" class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]">
-                Dev
+            <a
+                href="/registeration-status"
+                class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]"
+            >
+                Reg Status
             </a>
-            <a href="/reset" class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]">
-                Reset URI
+            <a
+                href="/add-event-leads"
+                class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]"
+            >
+                Add Event Leads
+            </a>
+            <a
+                href="/"
+                class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]"
+            >
+                Add Volunteers
+            </a>
+            <a
+                href="/"
+                class="font-yatra text-xl tracking-wider border-2 p-2 rounded-xl hover:border-3 hover:rounded-none transition-all ease-out duration-600 text-[#EFF7CF] border-[#EFF7CF]"
+                on:click={async () => {
+                    await signOut({ callbackUrl: "/" });
+                }}
+            >
+                Switch Account
             </a>
         </div>
     </div>

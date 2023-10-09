@@ -1,3 +1,3 @@
-export const load = async ({ cookies }) => {
-   
+export const load = async () => {
+    
 };
