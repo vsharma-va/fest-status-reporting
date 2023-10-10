@@ -152,6 +152,56 @@ const events = [
         type: "team",
         strapiId: "C_BTLBAB",
     },
+    {
+        name: "Athletics",
+        type: "solo",
+        strapiId: "S_ATH",
+    },
+    {
+        name: "Women's Basketball",
+        type: "team",
+        starpiId: "S_BB_F",
+    },
+    {
+        name: "Men's Basketball",
+        type: "team",
+        strapiId: "S_BB_M",
+    },
+    {
+        name: "Chess",
+        type: "team",
+        strapiId: "S_CHS",
+    },
+    {
+        name: "Men's Football",
+        type: "team",
+        strapiId: "S_FB_M",
+    },
+    {
+        name: "Women's Tennis",
+        type: "team",
+        strapiId: "S_TN_F",
+    },
+    {
+        name: "Men's Tennis",
+        type: "team",
+        strapiId: "S_TN_M",
+    },
+    {
+        name: "Women's Table Tennis",
+        type: "team",
+        strapiId: "S_TT_F",
+    },
+    {
+        name: "Men's Table Tennis",
+        type: "team",
+        strapiId: "S_TT_M",
+    },
+    {
+        name: "Men's Volleyball",
+        type: "team",
+        strapiId: "S_VB_M",
+    },
 ];
 
 //@ts-ignore
