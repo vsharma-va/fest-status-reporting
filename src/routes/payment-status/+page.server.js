@@ -24,7 +24,7 @@ export const load = async (event) => {
         if (!foundAccount) {
             return { authorised: false };
         } else {
-            if (foundAccount.role === "gen+" || foundAccount.role === "gen-") {
+            if (foundAccount.role === "gen+") {
                 return { authorised: true };
             } else {
                 return { authorised: false };
