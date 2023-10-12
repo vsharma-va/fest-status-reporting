@@ -13,6 +13,16 @@ const client = new MongoClient(process.env.MONGO_URL);
 
 const events = [
     {
+        name: "Saarang",
+        type: "solo",
+        strapiId: "C_SAARANG",
+    },
+    {
+        name: "Battle Of Bands",
+        type: "team",
+        strapiId: "C_BOB",
+    },
+    {
         name: "MindScribe",
         type: "solo",
         strapiId: "C_MNDSCR",
@@ -65,7 +75,7 @@ const events = [
     {
         name: "Beat2Beat",
         type: "team",
-        strapiId: "C_GRW",
+        strapiId: "C_GRD",
     },
     {
         name: "Crown Quest",
@@ -245,7 +255,8 @@ export const actions = {
             const formData = await event.request.formData();
             let eventId = formData.get("eventName");
             let pageNumber = formData.get("pageNumber");
-            if (eventId) {
+            let dataSetting = formData.get("dataSetting");
+            if (dataSetting && eventId) {
                 let requiredEventObj;
                 events.forEach((indiObj) => {
                     if (indiObj.strapiId == eventId) {
@@ -254,72 +265,130 @@ export const actions = {
                 });
                 //@ts-ignore
 
-                const database = client.db("teams");
+                const teamDatabase = client.db("teams");
                 if (requiredEventObj) {
-                    //@ts-ignore
-                    if (requiredEventObj.type === "solo") {
-                        const soloRegs = database.collection("t_soloregs");
-                        let reg = await soloRegs
-                            .find(
-                                {
-                                    //@ts-ignore
-                                    event: requiredEventObj.strapiId,
-                                },
-                                optionsTypes
-                            )
-                            .skip(Number(pageNumber) * perPage)
-                            .limit(perPage)
-                            .toArray();
-                        let map = await getUserDetails(false, reg);
-                        if (Number(pageNumber) == 0) {
-                            return {
-                                success: true,
-                                team: false,
-                                registrationObj: map,
-                                firstPage: true,
-                            };
-                        } else {
-                            return {
-                                success: true,
-                                team: false,
-                                registrationObj: map,
-                                firstPage: false,
-                            };
-                        }
+                    if (dataSetting === "reg") {
                         //@ts-ignore
-                    } else if (requiredEventObj.type === "team") {
-                        const teamRegs = database.collection("t_teams");
-                        let reg = await teamRegs
-                            .find(
-                                {
-                                    //@ts-ignore
-                                    event: requiredEventObj.strapiId,
-                                },
-                                optionsTypes
-                            )
-                            .skip(Number(pageNumber) * perPage)
-                            .limit(perPage)
-                            .toArray();
-                        let map = await getUserDetails(true, reg);
-                        if (Number(pageNumber) == 0) {
-                            return {
-                                success: true,
-                                team: true,
-                                registrationObj: map,
-                                firstPage: true,
-                            };
-                        } else {
-                            return {
-                                success: true,
-                                team: true,
-                                registrationObj: map,
-                                firstPage: false,
-                            };
+                        if (requiredEventObj.type === "solo") {
+                            const soloRegs =
+                                teamDatabase.collection("t_soloregs");
+                            let reg = await soloRegs
+                                .find(
+                                    {
+                                        //@ts-ignore
+                                        event: requiredEventObj.strapiId,
+                                    },
+                                    optionsTypes
+                                )
+                                .skip(Number(pageNumber) * perPage)
+                                .limit(perPage)
+                                .toArray();
+                            let map = await getUserDetails(false, reg);
+                            if (Number(pageNumber) == 0) {
+                                return {
+                                    success: true,
+                                    team: false,
+                                    registrationObj: map,
+                                    firstPage: true,
+                                };
+                            } else {
+                                return {
+                                    success: true,
+                                    team: false,
+                                    registrationObj: map,
+                                    firstPage: false,
+                                };
+                            }
+                            //@ts-ignore
+                        } else if (requiredEventObj.type === "team") {
+                            const teamRegs = teamDatabase.collection("t_teams");
+                            let reg = await teamRegs
+                                .find(
+                                    {
+                                        //@ts-ignore
+                                        event: requiredEventObj.strapiId,
+                                    },
+                                    optionsTypes
+                                )
+                                .skip(Number(pageNumber) * perPage)
+                                .limit(perPage)
+                                .toArray();
+                            let map = await getUserDetails(true, reg);
+                            if (Number(pageNumber) == 0) {
+                                return {
+                                    success: true,
+                                    team: true,
+                                    registrationObj: map,
+                                    firstPage: true,
+                                };
+                            } else {
+                                return {
+                                    success: true,
+                                    team: true,
+                                    registrationObj: map,
+                                    firstPage: false,
+                                };
+                            }
                         }
+                    } else if (dataSetting === "unreg") {
+                        const ticketingDatabase = client.db("ticketing");
+                        const teamsDatabase = client.db("teams");
+                        const passes = ticketingDatabase.collection("passes");
+                        const userMap = [];
+                        let passName;
+                        //@ts-ignore
+                        if (requiredEventObj["strapiId"].charAt(0) == "S") {
+                            //@ts-ignore
+                            passName = requiredEventObj["strapiId"].replace(
+                                "S",
+                                "SPORT"
+                            );
+                        } else if (
+                            //@ts-ignore
+                            requiredEventObj["strapiId"].charAt(0) == "C"
+                        ) {
+                            //@ts-ignore
+                            passName = requiredEventObj["strapiId"].replace(
+                                "C",
+                                "CLTR"
+                            );
+                        }
+                        // console.log(passName);
+                        const foundUsers = await passes
+                            .find({ type: passName }, optionsTypes)
+                            // .skip(Number(pageNumber) * perPage)
+                            // .limit(perPage)
+                            .toArray();
+                        const usersCollection =
+                            teamsDatabase.collection("t_users");
+                        // console.log(foundUsers);
+                        for (let index in foundUsers) {
+                            // console.log(typeof foundUsers[index].email);
+
+                            let foundReg = await usersCollection.findOne({
+                                email: {
+                                    $eq: foundUsers[index].email.trim(),
+                                },
+                            });
+                            // console.log(foundReg);
+                            // console.log(foundReg == null);
+                            if (foundReg == null) {
+                                userMap.push(foundUsers[index]);
+                            }
+                        }
+                        // console.log(userMap);
+                        return {
+                            success: true,
+                            team: true,
+                            registrationObj: userMap,
+                            firstPage: false,
+                            unReg: true,
+                        };
                     }
-                } else {
-                    throw redirect(302, "/");
+                    // console.log(requiredEventObj["strapiId"].charAt(0));
                 }
+            } else {
+                throw redirect(302, "/");
             }
         }
     },
@@ -372,7 +441,7 @@ async function getUserDetails(team, users) {
                 }
             }
         }
-        console.log(userMap);
+        // console.log(userMap);
         return userMap;
     }
 }

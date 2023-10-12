@@ -5,16 +5,21 @@
     export let form;
 
     let eventId = "";
+    let dataSetting = "";
     let pageNumber = 0;
     const pageSize = 5;
 
     //@ts-ignore
     function submit({ formData }) {
-        if (eventId) {
+        if (eventId != "disabled" && eventId != "disabled_" && dataSetting) {
             formData.set("eventName", eventId);
             formData.set("pageNumber", pageNumber);
+            formData.set("dataSetting", dataSetting);
+            console.log(dataSetting);
         }
     }
+    //@ts-ignore
+    // $: (dataSetting) => {console.log(dataSetting)};
 </script>
 
 {#if data.authorised}
@@ -41,11 +46,31 @@
                     class="font-yatra p-2 mt-5 max-sm:text-lg placeholder:max-md:text-lg w-full bg-[#1C1337] outline-none duration-200 caret-[#EFF7CF] placeholder:text-[#EFF7CF] text-[#EFF7CF] border-b-2"
                     bind:value={eventId}
                 >
-                    <option value="" selected disabled>Event Name</option>
+                    <option value="" selected disabled
+                        >Event Name</option
+                    >
                     {#each data.events as event}
                         <option value={event.strapiId}>{event.name}</option>
                     {/each}
                 </select>
+                {#if eventId.includes("_")}
+                    {#if (eventId.split("_")[1].length === 3) | (eventId.charAt(0) === "S")}
+                        <select
+                            class="font-yatra p-2 mt-5 max-sm:text-lg placeholder:max-md:text-lg w-full bg-[#1C1337] outline-none duration-200 caret-[#EFF7CF] placeholder:text-[#EFF7CF] text-[#EFF7CF] border-b-2"
+                            bind:value={dataSetting}
+                        >
+                            <option value="" selected disabled
+                                >What data to include?</option
+                            >
+                            <option value="unreg"
+                                >Show Unregistered Users Only</option
+                            >
+                            <option value="reg"
+                                >Show Registered Users Only</option
+                            >
+                        </select>
+                    {/if}
+                {/if}
                 <button
                     class="w-fit font-normal text-center bg-[#EFF7CF] py-1 px-5 text-md mt-[35px] mb-3 hover:scale-110 active:scale-95 disabled:opacity-50 opacity-100 disabled:scale-100 scale-105 transition-all duration-100 rounded-xl"
                 >
@@ -75,17 +100,32 @@
                     </div>
                 {/each}
             </div>
+        {:else if form.success && form.unReg}
+            <div
+                class="flex flex-colitems-center justify-center mt-5 flex-wrap gap-5 rounded-xl px-5 sm:px-[125px] md:mt-10 md:px-[0px] md:flex-row"
+            >
+                {#each form.registrationObj as regObj}
+                    <div
+                        class="bg-[#1C1337] text-[#EFF7CF] border-[1px] shadow-[5px_5px_0px_0px_rgba(239,247,207,1)] w-full md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/4 h-[200px] text-xl flex flex-col items-center justify-center rounded-xl gap-5"
+                    >
+                        <p class="font-yatra">{regObj.email}</p>
+                        <p class="font-yatra">{regObj.type}</p>
+                    </div>
+                {/each}
+            </div>
         {:else}
             <div
                 class="flex flex-col md:flex-row items-center justify-center mt-5 flex-wrap gap-10 lg:gap-2 rounded-xl px-5 sm:px-[125px] md:mt-10 md:px-[0px] md:flex-row"
             >
                 {#each Object.entries(form.registrationObj) as [teamNumber, memberArray]}
-                    <div class="flex flex-col items-center justify-center w-full px-5 md:w-1/2 lg:w-1/3">
+                    <div
+                        class="flex flex-col items-center justify-center w-full px-5 md:w-1/2 lg:w-1/3 mt-[15px]"
+                    >
                         {#each memberArray as memberObj}
                             <div
                                 class="bg-[#1C1337] text-[#EFF7CF] border-[1px] shadow-[5px_5px_0px_0px_rgba(239,247,207,1)] w-full h-[200px] text-xl flex flex-col items-center justify-center rounded-xl"
                             >
-                            <p class="font-yatra">{teamNumber}</p>
+                                <p class="font-yatra">{teamNumber}</p>
                                 <p class="font-yatra">{memberObj.email}</p>
                                 <p class="font-yatra">{memberObj.name}</p>
                                 <p class="font-yatra">{memberObj.phone}</p>
@@ -125,7 +165,7 @@
                         </div></button
                     >
                 {/if}
-                {#if !form.firstPage}
+                {#if !form.firstPage && !form.unReg}
                     <button
                         class="w-fit font-normal text-center bg-[#EFF7CF] py-1 px-5 text-md mt-[35px] mb-3 hover:scale-110 active:scale-95 disabled:opacity-50 opacity-100 disabled:scale-100 scale-105 transition-all duration-100 rounded-xl"
                         on:click={() => {
