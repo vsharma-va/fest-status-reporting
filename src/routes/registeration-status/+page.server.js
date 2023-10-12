@@ -75,7 +75,7 @@ const events = [
     {
         name: "Beat2Beat",
         type: "team",
-        strapiId: "C_GRD",
+        strapiId: "C_GRW",
     },
     {
         name: "Crown Quest",
@@ -347,11 +347,17 @@ export const actions = {
                             //@ts-ignore
                             requiredEventObj["strapiId"].charAt(0) == "C"
                         ) {
-                            //@ts-ignore
-                            passName = requiredEventObj["strapiId"].replace(
-                                "C",
-                                "CLTR"
-                            );
+                            // required since there has been a bit of a naming error with pass codes
+                            // the short code for group dance is C_GRW but the pass code is CLTR_GRD
+                            if (requiredEventObj["strapiId"] == "C_GRW") {
+                                passName = "CLTR_GRD";
+                            } else {
+                                //@ts-ignore
+                                passName = requiredEventObj["strapiId"].replace(
+                                    "C",
+                                    "CLTR"
+                                );
+                            }
                         }
                         // console.log(passName);
                         const foundUsers = await passes
