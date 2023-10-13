@@ -5,7 +5,7 @@
     export let form;
 
     let eventId = "";
-    let dataSetting = "";
+    let dataSetting = "reg";
     let pageNumber = 0;
     const pageSize = 5;
 
@@ -26,8 +26,8 @@
     <form
         method="post"
         use:enhance={(event) => {
-            submit(event);
             pageNumber = 0;
+            submit(event);
             return async ({ update }) => {
                 update({ reset: false });
             };
@@ -46,9 +46,7 @@
                     class="font-yatra p-2 mt-5 max-sm:text-lg placeholder:max-md:text-lg w-full bg-[#1C1337] outline-none duration-200 caret-[#EFF7CF] placeholder:text-[#EFF7CF] text-[#EFF7CF] border-b-2"
                     bind:value={eventId}
                 >
-                    <option value="" selected disabled
-                        >Event Name</option
-                    >
+                    <option value="" selected disabled>Event Name</option>
                     {#each data.events as event}
                         <option value={event.strapiId}>{event.name}</option>
                     {/each}
@@ -95,7 +93,7 @@
                         <p class="font-yatra">{regObj.email}</p>
                         <p class="font-yatra">{regObj.name}</p>
                         <p class="font-yatra">{regObj.phone}</p>
-                        <p class="font-yatra">{regObj.mahe}</p>
+                        <p class="font-yatra">MAHE STUDENT: {regObj.mahe}</p>
                         <p class="font-yatra">{regObj.institute}</p>
                     </div>
                 {/each}
@@ -125,7 +123,9 @@
                             <div
                                 class="bg-[#1C1337] text-[#EFF7CF] border-[1px] shadow-[5px_5px_0px_0px_rgba(239,247,207,1)] w-full h-[200px] text-xl flex flex-col items-center justify-center rounded-xl"
                             >
-                                <p class="font-yatra">{teamNumber}</p>
+                                <p class="font-yatra">
+                                    {teamNumber}
+                                </p>
                                 <p class="font-yatra">{memberObj.email}</p>
                                 <p class="font-yatra">{memberObj.name}</p>
                                 <p class="font-yatra">{memberObj.phone}</p>
@@ -151,7 +151,7 @@
                     };
                 }}
             >
-                {#if form.registrationObj.length == pageSize}
+                {#if form.registrationObj.length == pageSize || (form.team && Object.entries(form.registrationObj).length == pageSize)}
                     <button
                         class="w-fit font-normal text-center bg-[#EFF7CF] py-1 px-5 text-md mt-[35px] mb-3 hover:scale-110 active:scale-95 disabled:opacity-50 opacity-100 disabled:scale-100 scale-105 transition-all duration-100 rounded-xl"
                         on:click={() => {
