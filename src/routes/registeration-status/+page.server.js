@@ -189,7 +189,7 @@ const events = [
     },
     {
         name: "Women's Tennis",
-        type: "team",
+        type: "solo",
         strapiId: "S_TN_F",
     },
     {
@@ -199,7 +199,7 @@ const events = [
     },
     {
         name: "Women's Table Tennis",
-        type: "team",
+        type: "solo",
         strapiId: "S_TT_F",
     },
     {
@@ -257,6 +257,7 @@ export const actions = {
             let pageNumber = formData.get("pageNumber");
             let dataSetting = formData.get("dataSetting");
             if (dataSetting && eventId) {
+                // console.log("hello");
                 let requiredEventObj;
                 events.forEach((indiObj) => {
                     if (indiObj.strapiId == eventId) {
@@ -264,7 +265,6 @@ export const actions = {
                     }
                 });
                 //@ts-ignore
-
                 const teamDatabase = client.db("teams");
                 if (requiredEventObj) {
                     if (dataSetting === "reg") {
