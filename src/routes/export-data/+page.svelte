@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
     export let data;
 </script>
 
@@ -45,4 +45,4 @@
     </form>
 {:else}
     <div class="flex flex-col justify-center items-center">Unauthorised</div>
-{/if}
+{/if} -->
