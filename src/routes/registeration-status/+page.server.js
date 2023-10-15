@@ -30,24 +30,9 @@ const events = [
         strapiId: "C_MNDSCR",
     },
     {
-        name: "BattleGrounds Mayhem",
-        type: "team",
-        strapiId: "ES_BGDMHM",
-    },
-    {
         name: "Beats and Carrots",
         type: "solo",
         strapiId: "C_BTSCAR",
-    },
-    {
-        name: "COD:EXECUTION",
-        type: "team",
-        strapiId: "ES_CODEXE",
-    },
-    {
-        name: "Valorant: Rising",
-        type: "team",
-        strapiId: "ES_VALRIS",
     },
     {
         name: "Echoes",
@@ -80,19 +65,9 @@ const events = [
         strapiId: "C_GRW",
     },
     {
-        name: "Crown Quest",
-        type: "team",
-        strapiId: "ES_CRWQST",
-    },
-    {
         name: "Focus & Frame",
         type: "solo",
         strapiId: "C_FCSFRM",
-    },
-    {
-        name: "Goal Quest",
-        type: "solo",
-        strapiId: "ES_GOLQST",
     },
     {
         name: "Zenith",
