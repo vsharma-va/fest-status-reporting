@@ -329,6 +329,13 @@ export const actions = {
                         ((diffInMs % 86400000) % 3600000) / 60000
                     );
                     if (diffInMi >= 30) {
+                        await client
+                            .db("status_app")
+                            .collection("sa_export")
+                            .updateOne(
+                                { email: session.user.email },
+                                { $set: { last_accessed: new Date() } }
+                            );
                         let data = await getAllPassHolderData();
                         return {
                             success: true,
