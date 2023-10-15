@@ -363,6 +363,7 @@ async function getAllPassHolderData() {
                         "CLTR_BOB",
                         "CLTR_GRD",
                         "CLTR_FAS",
+                        "ESPORTS",
                     ],
                 },
                 generated: true,
