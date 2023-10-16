@@ -258,11 +258,14 @@ export const actions = {
                         let data = Object.entries(
                             registeredUsersMap.registrationObj
                         );
+                        // console.log(registeredUsersMap.registrationObj);
                         for (let index in data) {
                             for (let i = 0; i < data[index][1].length; i++) {
-                                data[index][1][i]["teamNumber"] =
-                                    data[index][0];
-                                csvData.push(data[index][1][i]);
+                                if (data[index][1][i] != null) {
+                                    data[index][1][i]["teamNumber"] =
+                                        data[index][0];
+                                    csvData.push(data[index][1][i]);
+                                }
                             }
                         }
                         return {
@@ -338,16 +341,6 @@ async function getAllPassHolderData() {
     const foundPasses = passesCollection
         .find(
             {
-                type: {
-                    $in: [
-                        "SUP_PRO",
-                        "CLTR_PRO",
-                        "CLTR_BOB",
-                        "CLTR_GRD",
-                        "CLTR_FAS",
-                        "ESPORTS",
-                    ],
-                },
                 generated: true,
             },
             optionsTypes

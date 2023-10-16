@@ -39,7 +39,8 @@
 {:else}
     <div class="h-screen flex items-center justify-center">
         <p class=" font-yatra text-[#EFF7CF] text-4xl text-wider">
-            UNAUTHORISED
+            UNAUTHORISED<br />Click on the hamburger icon on the top left and
+            select Reg Status
         </p>
     </div>
 {/if}

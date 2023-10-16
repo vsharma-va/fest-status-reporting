@@ -120,20 +120,24 @@
                         class="flex flex-col items-center justify-center w-full px-5 md:w-1/2 lg:w-1/3 mt-[15px]"
                     >
                         {#each memberArray as memberObj}
-                            <div
-                                class="bg-[#1C1337] text-[#EFF7CF] border-[1px] shadow-[5px_5px_0px_0px_rgba(239,247,207,1)] w-full h-[200px] text-xl flex flex-col items-center justify-center rounded-xl"
-                            >
-                                <p class="font-yatra">
-                                    {teamNumber}
-                                </p>
-                                <p class="font-yatra">{memberObj.email}</p>
-                                <p class="font-yatra">{memberObj.name}</p>
-                                <p class="font-yatra">{memberObj.phone}</p>
-                                <p class="font-yatra">
-                                    MAHE Student: {memberObj.mahe}
-                                </p>
-                                <p class="font-yatra">{memberObj.institute}</p>
-                            </div>
+                            {#if memberObj != null}
+                                <div
+                                    class="bg-[#1C1337] text-[#EFF7CF] border-[1px] shadow-[5px_5px_0px_0px_rgba(239,247,207,1)] w-full h-[200px] text-xl flex flex-col items-center justify-center rounded-xl"
+                                >
+                                    <p class="font-yatra">
+                                        {teamNumber}
+                                    </p>
+                                    <p class="font-yatra">{memberObj.email}</p>
+                                    <p class="font-yatra">{memberObj.name}</p>
+                                    <p class="font-yatra">{memberObj.phone}</p>
+                                    <p class="font-yatra">
+                                        MAHE Student: {memberObj.mahe}
+                                    </p>
+                                    <p class="font-yatra">
+                                        {memberObj.institute}
+                                    </p>
+                                </div>
+                            {/if}
                         {/each}
                     </div>
                 {/each}

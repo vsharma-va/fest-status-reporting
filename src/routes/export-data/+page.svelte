@@ -10,6 +10,9 @@
 
     //@ts-ignore
     function submit({ formData }) {
+        if (form) {
+            form.success = false;
+        }
         if (dataType) {
             if (dataType == "event") {
                 if (eventName) {
@@ -76,14 +79,14 @@
     {#if form}
         {#if form.success}
             <div
-                class="text-white flex flex-row justify-center items-center font-yatra text-2xl mt-[30px] hover:text-white underline visited:text-purple-600 hover:-translate-x-1 hover:-translate-y-1 duration-150"
+                class="text-white flex flex-row justify-center items-center font-yatra text-4xl mt-[30px] hover:text-white underline visited:text-purple-600 hover:-translate-x-1 hover:-translate-y-1 duration-150"
             >
                 <CSVDownloader
                     data={form.csvData}
                     filename={form.fileName}
                     bom={true}
                 >
-                    Download
+                    Download {form.fileName}
                 </CSVDownloader>
             </div>
         {/if}
