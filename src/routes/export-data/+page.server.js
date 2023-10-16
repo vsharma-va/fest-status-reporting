@@ -303,9 +303,7 @@ export const actions = {
                     let lastAccessed = userFound["last_accessed"];
                     //@ts-ignore
                     let diffInMs = new Date() - lastAccessed;
-                    let diffInMi = Math.round(
-                        ((diffInMs % 86400000) % 3600000) / 60000
-                    );
+                    let diffInMi = Math.round(diffInMs / 60000);
                     if (diffInMi >= 30) {
                         await client
                             .db("status_app")
