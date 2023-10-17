@@ -155,7 +155,7 @@
                     };
                 }}
             >
-                {#if form.registrationObj.length == pageSize || (form.team && Object.entries(form.registrationObj).length == pageSize)}
+                {#if form.registrationObj.length == form.pageSize || (form.team && Object.entries(form.registrationObj).length == form.pageSize)}
                     <button
                         class="w-fit font-normal text-center bg-[#EFF7CF] py-1 px-5 text-md mt-[35px] mb-3 hover:scale-110 active:scale-95 disabled:opacity-50 opacity-100 disabled:scale-100 scale-105 transition-all duration-100 rounded-xl"
                         on:click={() => {

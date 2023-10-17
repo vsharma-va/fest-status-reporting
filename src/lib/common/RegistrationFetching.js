@@ -109,6 +109,7 @@ export async function fetchRegisteredUsers(
                 team: false,
                 registrationObj: map,
                 firstPage: true,
+                pageSize: perPage,
             };
         } else {
             return {
@@ -116,6 +117,7 @@ export async function fetchRegisteredUsers(
                 team: false,
                 registrationObj: map,
                 firstPage: false,
+                pageSize: perPage,
             };
         }
         //@ts-ignore
@@ -154,6 +156,7 @@ export async function fetchRegisteredUsers(
                 team: true,
                 registrationObj: map,
                 firstPage: true,
+                pageSize: perPage,
             };
         } else {
             console.log(map);
@@ -162,6 +165,7 @@ export async function fetchRegisteredUsers(
                 team: true,
                 registrationObj: map,
                 firstPage: false,
+                pageSize: perPage,
             };
         }
     }
