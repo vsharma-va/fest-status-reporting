@@ -228,7 +228,7 @@ export const actions = {
         if (!session?.user) {
             throw redirect(302, "/");
         } else {
-            const perPage = 5;
+            let perPage;
             const formData = await event.request.formData();
             let eventId = formData.get("eventName");
             let pageNumber = formData.get("pageNumber");
@@ -241,6 +241,11 @@ export const actions = {
                         requiredEventObj = indiObj;
                     }
                 });
+                if (requiredEventObj.type === "team") {
+                    perPage = 2;
+                } else {
+                    perPage = 5;
+                }
                 //@ts-ignore
                 const teamDatabase = client.db("teams");
                 if (requiredEventObj) {
