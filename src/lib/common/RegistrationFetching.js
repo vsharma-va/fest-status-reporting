@@ -148,6 +148,7 @@ export async function fetchRegisteredUsers(
 
         let map = await getUserDetails(true, reg);
         if (Number(pageNumber) == 0) {
+            console.log(map);
             return {
                 success: true,
                 team: true,
@@ -155,6 +156,7 @@ export async function fetchRegisteredUsers(
                 firstPage: true,
             };
         } else {
+            console.log(map);
             return {
                 success: true,
                 team: true,

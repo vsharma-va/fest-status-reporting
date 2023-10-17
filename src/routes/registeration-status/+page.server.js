@@ -244,6 +244,7 @@ export const actions = {
                 //@ts-ignore
                 const teamDatabase = client.db("teams");
                 if (requiredEventObj) {
+                    console.log(requiredEventObj);
                     if (dataSetting === "reg") {
                         return await fetchRegisteredUsers(
                             requiredEventObj,
