@@ -52,7 +52,7 @@
                     {/each}
                 </select>
                 {#if eventId.includes("_")}
-                    {#if (eventId.split("_")[1].length === 3) | (eventId.charAt(0) === "S")}
+                    {#if eventId.split("_")[1].length == 3 || eventId.charAt(0) === "S"}
                         <select
                             class="font-yatra p-2 mt-5 max-sm:text-lg placeholder:max-md:text-lg w-full bg-[#1C1337] outline-none duration-200 caret-[#EFF7CF] placeholder:text-[#EFF7CF] text-[#EFF7CF] border-b-2"
                             bind:value={dataSetting}

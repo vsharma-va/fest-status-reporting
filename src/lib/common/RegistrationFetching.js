@@ -54,6 +54,13 @@ export async function fetchUnregisteredUsers(requiredEventObj) {
         // console.log(foundReg == null);
         if (foundReg == null) {
             userMap.push(foundUsers[index]);
+        } else {
+            let foundTeam = await teamsDatabase.collection("t_teams").findOne({
+                owner: foundUsers[index].email.trim(),
+            });
+            if (foundTeam == null) {
+                userMap.push(foundUsers[index]);
+            }
         }
     }
     // console.log(userMap);

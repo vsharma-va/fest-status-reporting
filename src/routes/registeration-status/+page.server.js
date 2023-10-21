@@ -147,7 +147,7 @@ const events = [
     {
         name: "Women's Basketball",
         type: "team",
-        starpiId: "S_BB_F",
+        strapiId: "S_BB_F",
     },
     {
         name: "Men's Basketball",
@@ -239,13 +239,14 @@ export const actions = {
                 events.forEach((indiObj) => {
                     if (indiObj.strapiId == eventId) {
                         requiredEventObj = indiObj;
+                        if (requiredEventObj.type === "team") {
+                            perPage = 2;
+                        } else {
+                            perPage = 5;
+                        }
                     }
                 });
-                if (requiredEventObj.type === "team") {
-                    perPage = 2;
-                } else {
-                    perPage = 5;
-                }
+
                 //@ts-ignore
                 const teamDatabase = client.db("teams");
                 if (requiredEventObj) {
