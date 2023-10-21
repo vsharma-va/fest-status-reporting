@@ -57,6 +57,7 @@ export async function fetchUnregisteredUsers(requiredEventObj) {
         } else {
             let foundTeam = await teamsDatabase.collection("t_teams").findOne({
                 owner: foundUsers[index].email.trim(),
+                event: requiredEventObj.strapiId,
             });
             if (foundTeam == null) {
                 userMap.push(foundUsers[index]);
